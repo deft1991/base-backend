@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            #            client-id: {clientId}
+            #            client-secret: {clientSecret}
+            client-id: 0oa5ksbd9t1I3g6ND4x6
+            client-secret: 5rw8ICXfG46DqZo4TcjMz14vHIVv_KMwLfGgNI-j
+            scope: openid, email, profile
+        provider:
+          okta:
+            issuer-uri: https://dev-991236.okta.com/oauth2/default
+
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
