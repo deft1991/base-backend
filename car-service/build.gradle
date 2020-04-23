@@ -4,17 +4,9 @@ plugins {
     id 'java'
 }
 
-apply plugin: 'org.springframework.boot'
-
-group = 'com.deft.developer'
+group = 'com.deft.second'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
 
 repositories {
     mavenCentral()
@@ -32,14 +24,9 @@ dependencies {
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
     testCompile group: 'io.projectreactor', name: 'reactor-test', version: '3.3.4.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.h2database:h2'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
 
+}
 
-
-
+test {
+    useJUnitPlatform()
 }

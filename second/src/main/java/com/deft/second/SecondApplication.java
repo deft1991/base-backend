@@ -1,4 +1,4 @@
-package com.deft.developer;
+package com.deft.second;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 @SpringBootApplication
 @Slf4j
-public class AuthWithOkta {
+public class SecondApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthWithOkta.class, args);
+        SpringApplication.run(SecondApplication.class, args);
     }
 
 }

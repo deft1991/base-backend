@@ -1,8 +1,8 @@
 spring:
   application:
-    name: group-service
+    name: second-service
 server:
-  port: 8083
+  port: 8082
 
 okta:
   oauth2:
