@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Courier users service
+  description: Internal api of courier portal
+  contact:
+    name: admin
+    email: couriers@gmail.com
+paths:
+  /sms/sendSms:
+    post:
+      description: Send a verification sms to user
+      operationId: sendVerificationSms
+      requestBody:
+        description: verification sms
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationSmsDto'
+      responses:
+        '201':
+          description: Verification sms sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationSmsDto'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourierApplicationException'
+components:
+  schemas:
+    VerificationSmsDto:
+      type: object
+      required:
+        - externalUserId
+        - phoneNumber
+        - smsType
+      properties:
+        id:
+          type: double
+        externalUserId:
+          type: string
+        phoneNumber:
+          type: double
+        smsType:
+          type: string
+          enum: [VERIFICATION, INFO, ADVERTISING, WARNING]
+        verificationCode:
+          type: string
+        responceSmsId:
+          type: double
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    CourierApplicationException:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    AeroSmsResponceDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          items:
+            $ref: '#/components/schemas/AeroDataResponce'
+    AeroDataResponce:
+      type: object
+      properties:
+        id:
+          type: double
+        from:
+          type: string
+        number:
+          type: double
+        text:
+          type: string
+        status:
+          type: integer
+          format: int32
+        extendStatus:
+          type: string
+        channel:
+          type: string
+          enum: [DIRECT]
+        cost:
+          type: double
+        #          format: int32
+        dateCreate:
+          type: string
+        dateSend:
+          type: string
