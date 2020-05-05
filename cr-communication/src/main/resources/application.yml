@@ -1,0 +1,39 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /communication
+spring:
+  profiles:
+    active: dev
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+    user: cr_user_migration
+    password: qwerty#123456
+    url: jdbc:mariadb://localhost:3306/crcommunication
+    contexts: creation
+  datasource:
+    url: jdbc:mariadb://localhost:3306/crcommunication
+    username: cr_user
+    password: qwerty#123456
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+okta:
+  oauth2:
+    issuer: https://dev-200946.okta.com/oauth2/default
+    audience: api://default
+    clientSecret: xbhnqcZFUM6yPNlD0Ck6Noufz3WtithPdQcuKJOh
+    clientId: 0oa19fr9vYAX4aMY94x6
+sms:
+  aeroSms:
+    accountEmail: https://deft1991%40gmail.com
+    apiKey: aVbYV5t8AgjcPk8RWBcRgF2O6ri3
+    sign: SMS Aero
+    channel: DIRECT

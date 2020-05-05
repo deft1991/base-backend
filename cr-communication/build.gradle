@@ -1,0 +1,105 @@
+plugins {
+    id "org.openapi.generator" version "${openApiDocVersion}"
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyVersion}"
+    id 'java'
+    id "io.freefair.lombok" version "${lombokPluginVersion}"
+}
+
+group = 'com.couriers.sms'
+sourceCompatibility = '1.11'
+compileJava.options.encoding = 'UTF-8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.okta.spring:okta-spring-boot-starter:1.4.0'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: "${modelMapperVersion}"
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${maridDbDriverVersion}"
+    implementation group: 'io.swagger', name: 'swagger-annotations', version: "${swaggerAnnotationVersion}"
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: "${openApiVersion}"
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: "${liquidBaseCoreVersion}"
+
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+    testImplementation group: 'junit', name: 'junit', version: '4.13'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+openApiGenerate() {
+    generatorName = "spring"
+    inputSpec = "$rootDir/cr-communication.yml".toString()
+    outputDir = "$buildDir/generated/server".toString()
+    modelPackage = "com.couriers.sms.model"
+    apiPackage = "com.couriers.sms.api"
+    invokerPackage = "com.couriers.sms"
+    groupId = "com.couriers.sms"
+    templateDir = "$rootDir/templates/ServerTemplates".toString()
+    configOptions = [
+            language               : "spring",
+            dateLibrary            : "java8",
+            configPackage          : "com.couriers.sms.config",
+            artifactId             : "com.couriers.sms",
+            performBeanValidation  : "true",
+            hideGenerationTimestamp: "true",
+            interfaceOnly          : "true",
+            generateSupportingFiles: "false",
+            java8                  : "true"
+    ]
+}
+
+task generateClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "java"
+    inputSpec = "$rootDir/cr-communication.yml".toString()
+    outputDir = "$buildDir/generated/client".toString()
+    library = "resttemplate"
+    modelPackage = "com.couriers.sms.client.model"
+    apiPackage = "com.couriers.sms.client.api"
+    invokerPackage = "com.couriers.sms.client"
+    groupId = "com.couriers.smsclient"
+    templateDir = "templates/ClientTemplates"
+    configOptions = [
+            language               : "java",
+            dateLibrary            : "java8",
+            performBeanValidation  : "false",
+            configPackage          : "com.couriers.sms.config",
+            hideGenerationTimestamp: "true",
+            generateSupportingFiles: "false",
+            java8                  : "true"
+    ]
+}
+task generateJSClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "nodejs-express-server"
+    inputSpec = "$rootDir/cr-communication.yml".toString()
+    outputDir = "$buildDir/generated/client/js".toString()
+}
+
+//task codegen(dependsOn: ['generateServer', 'generateClient'])
+compileJava.dependsOn tasks.openApiGenerate
+//assemble.dependsOn tasks.generateServer
+sourceSets.main.java.srcDir "$buildDir/generated/server/src/main/java"

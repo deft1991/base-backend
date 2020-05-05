@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 class CarController {
 
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
     public CarController(CarRepository carRepository) {
         this.carRepository = carRepository;
