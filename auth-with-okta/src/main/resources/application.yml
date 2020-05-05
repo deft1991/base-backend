@@ -1,11 +1,14 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: group-service
 server:
-  port: 8083
+  port: 8080
 
 okta:
   oauth2:
     issuer: https://dev-991236.okta.com/oauth2/default
     client-id: 0oa5ksbd9t1I3g6ND4x6
     client-secret: 5rw8ICXfG46DqZo4TcjMz14vHIVv_KMwLfGgNI-j
+    audience: api://default
