@@ -45,6 +45,15 @@ public class ApiGatewayApplication {
                             return f;
                         })
                         .uri("lb://group-service")) //downstream endpoint  lb - load balanced
+                .route("sms-service", r -> r.path("/sms-service/**")
+                        .filters(f -> {
+                            f.rewritePath("/sms-service/(?<segment>.*)", "/${segment}");
+                            f.filter(filterFactory.apply());
+                            f.hystrix(c -> c.setName("smsFallback")
+                                    .setFallbackUri("forward:/sms"));
+                            return f;
+                        })
+                        .uri("lb://sms-service")) //downstream endpoint  lb - load balanced
                 .build();
     }
 
