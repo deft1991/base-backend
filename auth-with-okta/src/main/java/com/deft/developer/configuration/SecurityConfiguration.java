@@ -12,6 +12,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SimpleSavedRequest;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .oauth2Login().and()
                 .csrf()
                 /* CookieCsrfTokenRepository.withHttpOnlyFalse
@@ -53,6 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * The referrer-based request cache comes in handy
      * when you’re developing React on http://localhost:3000
      * and want to be redirected back there after logging in.
+     *
      * @return
      */
     @Bean

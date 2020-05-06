@@ -15,8 +15,10 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +47,9 @@ public class UserController {
         }
     }
 
+//    @CrossOrigin
     @PostMapping("/api/users")
-    public ResponseEntity<?> createUser(OAuth2UserCreateDto userCreateDto) {
+    public ResponseEntity<?> createUser(@RequestBody OAuth2UserCreateDto userCreateDto) {
         if (userCreateDto == null) {
             return new ResponseEntity<>("", HttpStatus.FORBIDDEN);
         } else {
@@ -59,10 +62,11 @@ public class UserController {
 
                     .build();
             User user = UserBuilder.instance()
-                    .setEmail("qweqwe@mail.ru")
-                    .setFirstName("Joe")
-                    .setLastName("Coder")
-                    .setPassword("!1Abcdef".toCharArray())
+                    .setEmail(userCreateDto.getEmail())
+                    .setFirstName(userCreateDto.getFirstName())
+                    .setLastName(userCreateDto.getLastName())
+                    .setPassword(userCreateDto.getPassword().toCharArray())
+                    .setMobilePhone(userCreateDto.getPhoneNumber())
                     .setSecurityQuestion("Favorite security question?")
                     .setSecurityQuestionAnswer("None of them!")
                     .putProfileProperty("division", "Seven") // key/value pairs predefined in the user profile schema
